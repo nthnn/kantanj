@@ -19,7 +19,7 @@ if [[ ! -f "$SRC_FILE" ]]; then
 fi
 
 echo "==> Building kantanj..."
-gcc -O0 -o "$BUILD_PATH" "$SRC_FILE"
+gcc -O0 -o "$BUILD_PATH" "$SRC_FILE" >/dev/null 2>&1
 
 if [[ ! -f "$BUILD_PATH" ]]; then
     echo "ERROR: Build failed — binary not created."
