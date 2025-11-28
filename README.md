@@ -7,7 +7,7 @@
 ## Installation
 
 ```sh
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/nthnn/kantanj/master/build.sh)"
+curl -fsSL https://raw.githubusercontent.com/nthnn/kantanj/master/build.sh | bash
 ```
 
 ---
