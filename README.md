@@ -4,14 +4,6 @@
 
 ---
 
-## Installation
-
-```sh
-curl -fsSL https://raw.githubusercontent.com/nthnn/kantanj/master/build.sh | bash
-```
-
----
-
 ## Features
 
 * Create a minimal Maven project (pom + `src/main/java/.../App.java`) from a package name.
@@ -47,12 +39,6 @@ gcc -O2 -std=c11 -Wall -Wextra -o kantanj kantanj.c
 
 ```bash
 sudo install -m 0755 kantanj /usr/local/bin/kantanj
-```
-
-Or use the provided installer script:
-
-```bash
-./build.sh
 ```
 
 3. Create a project:
