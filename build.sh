@@ -1,31 +1,42 @@
-#!/bin/bash
+#!/usr/bin/env bash
+set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-SOURCE_FILE="$SCRIPT_DIR/kantanj.c"
-OUTPUT_BINARY="$SCRIPT_DIR/kantanj"
+# Build & install kantanj (Bash version)
+REPO_URL="https://github.com/nthnn/kantanj"
+WORKDIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CLONE_DIR="$WORKDIR/"
+SOURCE_FILE_NAME="kantanj.c"
+OUTPUT_BINARY_NAME="kantanj"
+DEST="/usr/local/bin/$OUTPUT_BINARY_NAME"
 
-echo "Pulling out kantanj..."
-git clone https://github.com/nthnn/kantanj --depth 1
-cd kantanj
+echo "Using workdir: $WORKDIR"
+echo "Cloning (or updating) $REPO_URL -> $CLONE_DIR"
 
-if [[ ! -f "$SOURCE_FILE" ]]; then
-    echo "Error: kantanj.c not found in $SCRIPT_DIR"
-    exit 1
+if [[ -d "$CLONE_DIR/.git" ]]; then
+  printf "Repo exists, updating...\n"
+  (cd "$CLONE_DIR" && git fetch --depth=1 origin && git reset --hard origin/HEAD)
+else
+  git clone --depth 1 "$REPO_URL" "$CLONE_DIR"
 fi
 
-echo "Building kantanj..."
-gcc -O0 -o "$OUTPUT_BINARY" "$SOURCE_FILE"
+SRC_PATH="$CLONE_DIR/$SOURCE_FILE_NAME"
+BUILD_PATH="$WORKDIR/$OUTPUT_BINARY_NAME"
 
-if [[ ! -f "$OUTPUT_BINARY" ]]; then
-    echo "Build failed: kantanj was not created."
-    exit 1
+if [[ ! -f "$SRC_PATH" ]]; then
+  echo "Error: $SOURCE_FILE_NAME not found in $CLONE_DIR"
+  exit 1
 fi
 
-echo "Build successful."
-echo "Installing kantanj into /usr/local/bin..."
+echo "Building kantanj from $SRC_PATH..."
+gcc -O2 -std=c11 -Wall -Wextra -o "$BUILD_PATH" "$SRC_PATH"
 
-sudo install -m 0755 "$OUTPUT_BINARY" /usr/local/bin/kantanj
+if [[ ! -f "$BUILD_PATH" ]]; then
+  echo "Build failed: $BUILD_PATH not created."
+  exit 1
+fi
 
-echo "Installation complete!"
-echo "You can now run:"
-echo "    kantanj --help  (or any command you implemented)"
+echo "Build successful. Installing to $DEST (requires sudo)..."
+sudo install -m 0755 "$BUILD_PATH" "$DEST"
+
+echo "Installation complete: $DEST"
+echo "Run: $DEST --help  (or just 'kantanj' if /usr/local/bin is in PATH)"
