@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -eu pipefail
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 SOURCE_FILE="$SCRIPT_DIR/kantanj.c"
@@ -9,6 +9,10 @@ if [[ ! -f "$SOURCE_FILE" ]]; then
     echo "Error: kantanj.c not found in $SCRIPT_DIR"
     exit 1
 fi
+
+echo "Pulling out kantanj..."
+git clone https://github.com/nthnn/kantanj --depth 1
+cd kantanj
 
 echo "Building kantanj..."
 gcc -O0 -o "$OUTPUT_BINARY" "$SOURCE_FILE"
