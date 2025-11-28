@@ -380,12 +380,10 @@ static int cmd_create_project_with_package(const char *name, const char *pkg)
     if (!projdir) die("Out of memory");
 
     if (access(projdir, F_OK) == 0) {
-        free(projdir);
         die("Project directory %s already exists", projdir);
     }
 
     if (mkpath(projdir, 0755) != 0) {
-        free(projdir);
         die("Failed to create project directory %s", projdir);
     }
 
@@ -502,7 +500,9 @@ static int cmd_build_project(const char *name)
     char *projdir = join_paths(cwd, name);
     if (!projdir) die("Out of memory");
 
-    if (access(projdir, F_OK) != 0) { free(projdir); die("Project directory %s does not exist", projdir); }
+    if (access(projdir, F_OK) != 0) {
+        die("Project directory %s does not exist", projdir);
+    }
 
     const char *home = home_dir();
     char *settings = join_paths(home, ".m2/settings.xml");
@@ -638,7 +638,9 @@ static int cmd_clean_project(const char *name)
     char *projdir = join_paths(cwd, name);
     if (!projdir) die("Out of memory");
 
-    if (access(projdir, F_OK) != 0) { free(projdir); die("Project directory %s does not exist", projdir); }
+    if (access(projdir, F_OK) != 0) {
+        die("Project directory %s does not exist", projdir);
+    }
 
     char *targetdir = join_paths(projdir, "target");
     if (!targetdir) { free(projdir); die("Out of memory"); }
