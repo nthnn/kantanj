@@ -4,6 +4,14 @@
 
 ---
 
+## Installation
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/nthnn/kantanj/refs/heads/main/install.sh | bash
+```
+
+---
+
 ## Features
 
 * Create a minimal Maven project (pom + `src/main/java/.../App.java`) from a package name.
