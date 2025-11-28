@@ -52,7 +52,7 @@ sudo install -m 0755 kantanj /usr/local/bin/kantanj
 Or use the provided installer script:
 
 ```bash
-./install-kantanj.sh
+./build.sh
 ```
 
 3. Create a project:
